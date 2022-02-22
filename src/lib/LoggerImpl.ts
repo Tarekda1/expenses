@@ -32,7 +32,7 @@ class Logger {
       this.logger.add(
         new transports.File({
           level: 'error',
-          filename: path.join(__dirname, path.sep.toString(), "eaga-admin.logs"),
+          filename: path.join(__dirname, path.sep.toString(), "expense.logs"),
           format: format.combine(format.colorize(), format.simple()),
         })
       );

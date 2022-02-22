@@ -6,8 +6,6 @@ import {
 } from "./config/constants";
 import { Logger } from "./lib/LoggerImpl";
 import { middlewares } from "./middlewares/error.handler";
-import { middlewares as staticHandler } from "./middlewares/staticfiles.handler";
-import { middlewares as corsHandler } from "./middlewares/cors.handler";
 import { routes as apiRoutes } from "./routes/index";
 import helmet from "helmet";
 import compression from "compression";
@@ -20,16 +18,12 @@ console.log("global", globals.__baseDir);
 const app = express();
 const logger = new Logger();
 
-app.use(corsHandler.cors());
 app.use(helmet());
 app.use(compression());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 app.use(params.expressMiddleware());
 app.use(logger.getRequestLogger());
-
-//serve static files
-app.use("/static", staticHandler.handleStaticFiles());
 
 app.use("/api", apiRoutes);
 app.get("/health", (req, res) =>
@@ -43,5 +37,6 @@ app.use((req, res, next) => {
   res.statusCode = NOT_FOUND_STATUS_CODE;
   res.send(err.message);
 });
+
 app.use(middlewares.handleRequestError);
 export { app };
